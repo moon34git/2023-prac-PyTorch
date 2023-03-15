@@ -139,4 +139,5 @@ def implement(train_loader, test_loader, model, criterion, optimizer):
             if not (count % 500):
                 print(f"Iteration: {count}, Loss: {loss.data:>7f}, Accuracy: {accuracy:>7f}%")
                 
-implement(train_loader, test_loader, modelDNN, criterionDNN, optimizerDNN)
+# implement(train_loader, test_loader, modelDNN, criterionDNN, optimizerDNN)
+show_example(train_dataset)
