@@ -172,21 +172,51 @@ train_loss, train_accuracy = [], []
 val_loss, val_accuracy = [], []
 
 start = time.time()
+
 for epoch in range(epochs):
     print(f'Epoch {epoch + 1} of {epochs}')
+    
     train_epoch_loss, train_epoch_accuracy = training(model, train_dataloader, train_dataset, optimizer, criterion)
     val_epoch_loss, val_epoch_accuracy = validate(model, val_dataloader, val_dataset, criterion)
     train_loss.append(train_epoch_loss)
     train_accuracy.append(train_epoch_accuracy)
     val_loss.append(val_epoch_loss)
     val_accuracy.append(val_epoch_accuracy)
+    
     if args['lr_scheduler']:
         lr_scheduler(val_epoch_loss)
+        
     if args['early_stopping']:
         early_stopping(val_epoch_loss, model)
         if early_stopping.early_stop:
             break
+        
     print(f'Train Loss: {train_epoch_loss:.4f}, Train ACC: {train_epoch_accuracy:.2f}')
     print(f'Val Loss: {val_epoch_loss:.4f}, Val ACC: {val_epoch_accuracy:.2f}')
+    
 end = time.time()
+
 print(f'Training Time: {(end - start)/60:.3f} minutes')
+
+print('Saving loss and accuracy plots...')
+plt.figure(figsize = (10, 7))
+plt.plot(train_accuracy, color = 'green', label = 'train_accuracy')
+plt.plot(val_accuracy, color = 'blue', label = 'validation accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.savefig(f'.img/{acc_plot_name}.png')
+plt.show()
+
+plt.figure(figsize = (10, 7))
+plt.plot(train_loss, color = 'orange', label = 'train loss')
+plt.plot(val_loss, color = 'red', label = 'validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.savefig(f'.img/{loss_plot_name}.png')
+plt.show()
+
+print('Saving model...')
+torch.save(model.state_dict(), f'./img/{model_name}.pth')
+print('Training COMPLETE')
