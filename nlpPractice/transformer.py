@@ -277,7 +277,7 @@ def trainIters(model, encoder, decoder, n_iters, input_lang, output_lang, pairs,
             print_loss_avg = print_loss_total / 5000
             print_loss_total = 0
             print(f'Iteration: {iter} | Loss: {print_loss_avg:.4f}')
-    
+            
         
 def encoder_decoder():
     lang1 = 'eng'
@@ -329,13 +329,12 @@ def encoder_decoder_attention():
     model = Seq2Seq(encoder, decoder, device).to(device)
     
     print(encoder)
+    print(decoder)
     print(attn_decoder)
     
     attn_model = trainIters(model, encoder, attn_decoder, 75000, input_lang, output_lang, pairs, print_every = 5000, plot_every = 100, learning_rate = 0.01)
     
     
-      
-
 if __name__ == '__main__':
     # encoder_decoder()
     encoder_decoder_attention()
